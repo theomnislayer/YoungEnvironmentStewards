@@ -1,0 +1,39 @@
+﻿<Project Sdk="MSTest.Sdk/3.6.4">
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <!--
+      Displays error on console in addition to the log file. Note that this feature comes with a performance impact.
+      For more information, visit https://learn.microsoft.com/dotnet/core/testing/unit-testing-platform-integration-dotnet-test#show-failure-per-test
+      -->
+    <TestingPlatformShowTestsFailure>true</TestingPlatformShowTestsFailure>
+  </PropertyGroup>
+  <Target Name="CreateEnv" BeforeTargets="PreBuildEvent" Condition="!Exists('$(ProjectDir)\.env')">
+    <Message Text="Creating $(ProjectDir).env" Importance="high" />
+    <Exec Command="echo # override your configuration variables&gt; .env" />
+    <Exec Command="echo OpenApiKey=&gt;&gt; .env" />
+    <Exec Command="echo OpenApiEndpoint=&gt;&gt; .env" />
+  </Target>
+  <ItemGroup>
+    <ProjectReference Include="..\YES.Dto\YES.Dto.csproj" />
+    <ProjectReference Include="..\YES.Api\YES.Api.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update=".env">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" />
+    <PackageReference Update="Microsoft.Testing.Extensions.CodeCoverage" />
+    <PackageReference Update="Microsoft.Testing.Extensions.TrxReport" />
+    <PackageReference Update="MSTest.Analyzers">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Update="MSTest.TestAdapter" />
+    <PackageReference Update="MSTest.TestFramework" />
+  </ItemGroup>
+</Project>
